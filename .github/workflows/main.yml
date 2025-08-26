@@ -86,10 +86,10 @@ jobs:
           fi
           echo "Found APK at $APK_PATH"
           mv "$APK_PATH" "drozer-agent-v$VERSION.apk"
-          echo "new_name=$NEW_NAME" >> "$GITHUB_OUTPUT"
+          echo "apk=$APK_PATH" >> "$GITHUB_OUTPUT"
           
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
            name: drozer-agent-apk
-           path: ${{ steps.find_apk.outputs.new_name }}
+           path: ${{ steps.find_apk.outputs.apk }}
