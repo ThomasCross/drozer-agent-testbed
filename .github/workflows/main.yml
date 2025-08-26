@@ -77,6 +77,7 @@ jobs:
         run: ./gradlew -p agent assembleRelease
 
       - name: Find and rename APK
+        id: find_apk
         run: |
           VERSION=${{ needs.get-version.outputs.version }}
           APK_PATH=$(find agent/build/outputs/apk/release -name "*.apk" | head -n 1)
@@ -86,7 +87,7 @@ jobs:
           fi
           echo "Found APK at $APK_PATH"
           mv "$APK_PATH" "drozer-agent-v$VERSION.apk"
-          echo "apk=$APK_PATH" >> "$GITHUB_OUTPUT"
+          echo "apk=$APK_PATH" >> $GITHUB_OUTPUT
           
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
