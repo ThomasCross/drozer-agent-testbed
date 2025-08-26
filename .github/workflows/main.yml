@@ -36,8 +36,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
 
       - name: Update version in AndroidManifest.xml
         run: |
@@ -64,8 +62,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -75,10 +71,10 @@ jobs:
           cache: 'gradle'
 
       - name: Make gradlew executable
-        run: chmod +x agent/gradlew
+        run: chmod +x ./gradlew
 
       - name: Build APK with Gradle
-        run: ./agent/gradlew -p agent assembleRelease
+        run: ./gradlew -p agent assembleRelease
 
       - name: Find and rename APK
         run: |
@@ -90,9 +86,10 @@ jobs:
           fi
           echo "Found APK at $APK_PATH"
           mv "$APK_PATH" "drozer-agent-v$VERSION.apk"
+          echo "new_name=$NEW_NAME" >> "$GITHUB_OUTPUT"
           
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: drozer-agent-apk
-          path: drozer-agent-v*.apk
+           name: drozer-agent-apk
+           path: ${{ steps.find_apk.outputs.new_name }}
