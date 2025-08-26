@@ -92,6 +92,7 @@ jobs:
           echo "Found APK at $APK_PATH"
 
           NEW_NAME="drozer-agent-v${VERSION}"
+          echo "Named: $NEW_NAME"
           NEW_NAME_APK="${NEW_NAME}.apk"
           mv "$APK_PATH" "$NEW_NAME_APK"
           echo "apk_name=$NEW_NAME" >> "$GITHUB_OUTPUT"
